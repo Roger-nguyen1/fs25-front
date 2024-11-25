@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { handlerCookie } from "./lib/setCookie";
 
 export default function Home() {
   const router = useRouter();
@@ -8,11 +9,14 @@ export default function Home() {
   const [message, setMessage] = useState<string>("");
 
   const handleValidate = () => {
-    if (accessCode === process.env.NEXT_PUBLIC_ACCESS_CODE) {
-      setMessage("");
-      router.push("/farms");
-    } else {
+    if (!accessCode) {
+      setMessage("Entrez le code d'accès");
+    } else if (accessCode !== process.env.NEXT_PUBLIC_ACCESS_CODE) {
       setMessage("Mauvais code d'accès");
+    } else if (accessCode === process.env.NEXT_PUBLIC_ACCESS_CODE) {
+      setMessage("");
+      handlerCookie(accessCode);
+      router.push("/farms");
     }
   };
 
