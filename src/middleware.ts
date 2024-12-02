@@ -1,29 +1,30 @@
 // middleware.ts
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 const accessCode = process.env.NEXT_PUBLIC_ACCESS_CODE;
 
 export function middleware(request: NextRequest) {
-  const tokenCookie = request.cookies.get('token');
-  const isHomePage = request.nextUrl.pathname === '/';
+  const tokenCookie = request.cookies.get("token");
+  const tokenIsValid = tokenCookie?.value === accessCode;
+  const isFarmPage = request.nextUrl.pathname === "/farms";
+  const isHomePage = request.nextUrl.pathname === "/";
 
-  // Vérifier si le token est présent et valide
-  if (!tokenCookie || tokenCookie.value !== accessCode) {
-    // Rediriger vers la page de connexion si le token n'est pas présent ou invalide
-    return NextResponse.redirect(new URL('/login', request.url));
+  // Si un token valide est présent, rediriger vers /farms (sauf si on est déjà sur /farms)
+  if (tokenIsValid && !isFarmPage) {
+    return NextResponse.redirect(new URL("/farms", request.url));
   }
 
-  // Si l'utilisateur est authentifié et tente d'accéder à la page d'accueil, rediriger vers le tableau de bord
-  if (tokenCookie && tokenCookie.value === accessCode && isHomePage) {
-    return NextResponse.redirect(new URL('/farms', request.url));
+  // Si aucun token valide n'est présent, rediriger vers /
+  if (!tokenIsValid && !isHomePage) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // Si le token est présent et valide, permettre l'accès à la page
+  // Autoriser l'accès sinon
   return NextResponse.next();
 }
 
 // Configurer les chemins pour lesquels le middleware s'applique
 export const config = {
-  matcher: ['/','/farms'],
+  matcher: ["/", "/farms"], // S'applique à toutes les pages
 };
