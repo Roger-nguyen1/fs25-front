@@ -52,7 +52,7 @@ export default function Farms() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[url('/images/fs25-2.jpg')] bg-cover bg-center bg-no-repeat bg-opacity-0 animate-fade-in p-8">
       <h1 className="text-5xl font-bold text-white mb-4">
-        Farming Simulator 25 Farms
+        Farming Simulator 25 Farms (beta 1.0)
       </h1>
       <p className="text-white mb-4">Dernière mise à jour : {lastUpdate}</p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl">
