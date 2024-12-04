@@ -5,10 +5,12 @@ import { handlerCookie } from "./lib/setCookie";
 
 export default function Home() {
   const router = useRouter();
+  const [isLoading, setIsloading] = useState<boolean>(false);
   const [accessCode, setAccessCode] = useState<string>("");
   const [message, setMessage] = useState<string>("");
 
   const handleValidate = () => {
+    setIsloading(true);
     if (!accessCode) {
       setMessage("Entrez le code d'accès");
     } else if (accessCode !== process.env.NEXT_PUBLIC_ACCESS_CODE) {
@@ -33,6 +35,16 @@ export default function Home() {
             onChange={(e) => setAccessCode(e.target.value)}
             required
           />
+          {isLoading && (
+            <div
+              className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-success motion-reduce:animate-[spin_1.5s_linear_infinite]"
+              role="status"
+            >
+              <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+                Loading...
+              </span>
+            </div>
+          )}
           {message && <p className="mt-3 text-xl text-red-700">{message}</p>}
           <button
             onClick={handleValidate}
