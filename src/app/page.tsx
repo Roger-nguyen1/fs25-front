@@ -21,7 +21,7 @@ export default function Home() {
       } else if (accessCode === process.env.NEXT_PUBLIC_ACCESS_CODE) {
         setMessage("");
         handlerCookie(accessCode);
-        console.log('Redirection vers /farms');
+        //console.log('Redirection vers /farms');
         setTimeout(() => {
         router.replace("/farms");
         router.refresh(); // Revalidez les composants serveur

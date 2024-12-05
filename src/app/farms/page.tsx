@@ -58,7 +58,7 @@ export default function Farms() {
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen bg-[url('/images/fs25-2.jpg')] bg-cover bg-center bg-no-repeat bg-opacity-0 animate-fade-in p-8">
        <div className="absolute top-4 right-4">
-        <button onClick={handleLogout} className="text-5xl text-white"><LogOut className="w-12 h-12"/></button>
+        <button onClick={handleLogout} className="text-5xl text-white"><LogOut className="transition-all duration-300 ease-in-out hover:scale-110 w-12 h-12"/></button>
         
       </div>
       <h1 className="text-5xl font-bold text-white mb-4">
