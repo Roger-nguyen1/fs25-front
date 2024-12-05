@@ -26,5 +26,5 @@ export function middleware(request: NextRequest) {
 
 // Configurer les chemins pour lesquels le middleware s'applique
 export const config = {
-  matcher: ["/", "/farms"], // S'applique à toutes les pages
+  matcher: ["/", "/farms","/farmdetails"], // S'applique à toutes les pages
 };

@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tractor } from "lucide-react";
+import { Tractor, LogOut } from "lucide-react";
 import formattedDate from "@/lib/formatDate";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+
 
 interface Farm {
   _id: string;
@@ -41,6 +42,11 @@ export default function Farms() {
     router.push(`/farmdetails/${farmId}`);
   };
 
+  const handleLogout = () => {
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+    router.push('/')
+  }
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-[url('/images/fs25-2.jpg')] bg-cover bg-center bg-no-repeat bg-opacity-0 animate-fade-in">
@@ -50,7 +56,11 @@ export default function Farms() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[url('/images/fs25-2.jpg')] bg-cover bg-center bg-no-repeat bg-opacity-0 animate-fade-in p-8">
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-[url('/images/fs25-2.jpg')] bg-cover bg-center bg-no-repeat bg-opacity-0 animate-fade-in p-8">
+       <div className="absolute top-4 right-4">
+        <button onClick={handleLogout} className="text-5xl text-white"><LogOut className="w-12 h-12"/></button>
+        
+      </div>
       <h1 className="text-5xl font-bold text-white mb-4">
         Farming Simulator 25 Farms (beta 1.0)
       </h1>
