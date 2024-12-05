@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { handlerCookie } from "./lib/setCookie";
 
@@ -9,31 +9,36 @@ export default function Home() {
   const [accessCode, setAccessCode] = useState<string>("");
   const [message, setMessage] = useState<string>("");
 
-  const handleValidate = () => {
+  const handleValidate = useCallback(async () => {
     setIsloading(true);
-    if(!process.env.NEXT_PUBLIC_ACCESS_CODE){
-      console.log("pas d'access code dans env")
-      return;
-    }
     try {
       if (!accessCode) {
         setMessage("Entrez le code d'accès");
-        } else if (accessCode !== process.env.NEXT_PUBLIC_ACCESS_CODE) {
+        
+      } else if (accessCode !== process.env.NEXT_PUBLIC_ACCESS_CODE) {
         setMessage("Mauvais code d'accès");
-        } else if (accessCode === process.env.NEXT_PUBLIC_ACCESS_CODE) {
+        
+      } else if (accessCode === process.env.NEXT_PUBLIC_ACCESS_CODE) {
         setMessage("");
         handlerCookie(accessCode);
         console.log('Redirection vers /farms');
-        router.push("/farms");
+        setTimeout(() => {
+        router.replace("/farms");
+        router.refresh(); // Revalidez les composants serveur
+        }, 900);
+        
       }
     } catch (error) {
       console.error('Erreur lors de la validation :', error);
       setMessage('Erreur inattendue');
       
     } finally {
-      setIsloading(false);
+      setTimeout(() => {
+        setIsloading(false);
+        }, 950);
+      
     }
-  };
+  }, [accessCode, router, setMessage, setIsloading]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-[url('/images/fs25-1.jpg')] bg-cover bg-center bg-no-repeat bg-opacity-0 animate-fade-in">
