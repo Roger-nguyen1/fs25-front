@@ -15,6 +15,7 @@ export default function Home() {
       setMessage("Entrez le code d'accès");
     } else if (accessCode !== process.env.NEXT_PUBLIC_ACCESS_CODE) {
       setMessage("Mauvais code d'accès");
+      setIsloading(false)
     } else if (accessCode === process.env.NEXT_PUBLIC_ACCESS_CODE) {
       setMessage("");
       handlerCookie(accessCode);
@@ -37,7 +38,7 @@ export default function Home() {
           />
           {isLoading && (
             <div
-              className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-success motion-reduce:animate-[spin_1.5s_linear_infinite]"
+              className="inline-block h-8 w-8 mt-2 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-lime-600 motion-reduce:animate-[spin_1.5s_linear_infinite]"
               role="status"
             >
               <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
@@ -45,7 +46,7 @@ export default function Home() {
               </span>
             </div>
           )}
-          {message && <p className="mt-3 text-xl text-red-700">{message}</p>}
+          {message && <p className="mt-1 text-xl text-red-700">{message}</p>}
           <button
             onClick={handleValidate}
             className="mt-6 py-3 px-7 bg-lime-600 bg-opacity-85 hover:bg-lime-400 hover:bg-opacity-100 rounded-md text-xl"
