@@ -11,15 +11,27 @@ export default function Home() {
 
   const handleValidate = () => {
     setIsloading(true);
-    if (!accessCode) {
-      setMessage("Entrez le code d'accès");
-    } else if (accessCode !== process.env.NEXT_PUBLIC_ACCESS_CODE) {
-      setMessage("Mauvais code d'accès");
-      setIsloading(false)
-    } else if (accessCode === process.env.NEXT_PUBLIC_ACCESS_CODE) {
-      setMessage("");
-      handlerCookie(accessCode);
-      router.push("/farms");
+    if(!process.env.NEXT_PUBLIC_ACCESS_CODE){
+      console.log("pas d'access code dans env")
+      return;
+    }
+    try {
+      if (!accessCode) {
+        setMessage("Entrez le code d'accès");
+        } else if (accessCode !== process.env.NEXT_PUBLIC_ACCESS_CODE) {
+        setMessage("Mauvais code d'accès");
+        } else if (accessCode === process.env.NEXT_PUBLIC_ACCESS_CODE) {
+        setMessage("");
+        handlerCookie(accessCode);
+        console.log('Redirection vers /farms');
+        router.push("/farms");
+      }
+    } catch (error) {
+      console.error('Erreur lors de la validation :', error);
+      setMessage('Erreur inattendue');
+      
+    } finally {
+      setIsloading(false);
     }
   };
 
