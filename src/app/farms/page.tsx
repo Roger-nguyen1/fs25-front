@@ -29,7 +29,6 @@ export default function Farms() {
         const response = await fetch("/api/farms");
         const data = await response.json();
         setFarms(data.farms || []);
-        console.log("imgsrc : ", data.farms.imgsrc);
       } catch (error) {
         console.error("Error fetching farms:", error);
       } finally {
