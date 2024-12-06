@@ -5,13 +5,14 @@ import { Tractor, LogOut } from "lucide-react";
 import formattedDate from "@/lib/formatDate";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
+import Image from "next/image";
 
 interface Farm {
   _id: string;
   name: string;
   money: number;
   players: string[];
+  imgsrc: string;
   updatedAt: any;
 }
 
@@ -28,6 +29,7 @@ export default function Farms() {
         const response = await fetch("/api/farms");
         const data = await response.json();
         setFarms(data.farms || []);
+        console.log("imgsrc : ", data.farms.imgsrc);
       } catch (error) {
         console.error("Error fetching farms:", error);
       } finally {
@@ -43,9 +45,9 @@ export default function Farms() {
   };
 
   const handleLogout = () => {
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
-    router.push('/')
-  }
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    router.push("/");
+  };
 
   if (loading) {
     return (
@@ -57,9 +59,10 @@ export default function Farms() {
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen bg-[url('/images/fs25-2.jpg')] bg-cover bg-center bg-no-repeat bg-opacity-0 animate-fade-in p-8">
-       <div className="absolute top-4 right-4">
-        <button onClick={handleLogout} className="text-5xl text-white"><LogOut className="transition-all duration-300 ease-in-out hover:scale-110 w-12 h-12"/></button>
-        
+      <div className="absolute top-4 right-4">
+        <button onClick={handleLogout} className="text-5xl text-white">
+          <LogOut className="transition-all duration-300 ease-in-out hover:scale-110 w-12 h-12" />
+        </button>
       </div>
       <h1 className="text-5xl font-bold text-white mb-4">
         Farming Simulator 25 Farms (beta 1.0)
@@ -74,7 +77,13 @@ export default function Farms() {
                 className="flex overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-105"
               >
                 <div className="bg-green-600 p-4 flex items-center justify-center">
-                  <Tractor className="text-white w-12 h-12" />
+                  {/*  <Tractor className="text-white w-12 h-12" />*/}
+                  <Image
+                    alt={`image farm`}
+                    src={farm.imgsrc}
+                    height={120}
+                    width={140}
+                  />
                 </div>
                 <div className="flex-grow">
                   <CardHeader>

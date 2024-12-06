@@ -14,29 +14,24 @@ export default function Home() {
     try {
       if (!accessCode) {
         setMessage("Entrez le code d'accès");
-        
       } else if (accessCode !== process.env.NEXT_PUBLIC_ACCESS_CODE) {
         setMessage("Mauvais code d'accès");
-        
       } else if (accessCode === process.env.NEXT_PUBLIC_ACCESS_CODE) {
         setMessage("");
         handlerCookie(accessCode);
         //console.log('Redirection vers /farms');
         setTimeout(() => {
-        router.replace("/farms");
-        router.refresh(); // Revalidez les composants serveur
-        }, 900);
-        
+          router.replace("/farms");
+          router.refresh(); // Revalidez les composants serveur
+        }, 1300);
       }
     } catch (error) {
-      console.error('Erreur lors de la validation :', error);
-      setMessage('Erreur inattendue');
-      
+      console.error("Erreur lors de la validation :", error);
+      setMessage("Erreur inattendue");
     } finally {
       setTimeout(() => {
         setIsloading(false);
-        }, 950);
-      
+      }, 1350);
     }
   }, [accessCode, router, setMessage, setIsloading]);
 
