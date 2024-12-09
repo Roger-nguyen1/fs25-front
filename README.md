@@ -38,3 +38,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ## TODOS
 
 - Mettre la vérif de code d'accès coté back
+
+FAIT----------
+
+- OK Ajout du currentDay et du GET dayTime
