@@ -18,12 +18,14 @@ interface Farm {
 
 export default function Farms() {
   const [farms, setFarms] = useState<Farm[]>([]);
+  const [dayTimes, setDayTimes] = useState<any>();
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   const lastUpdate = formattedDate(farms[0]?.updatedAt);
 
   useEffect(() => {
+    //GET farms
     const fetchFarms = async () => {
       try {
         const response = await fetch("/api/farms");
@@ -36,7 +38,20 @@ export default function Farms() {
       }
     };
 
+    //GET dayTimes
+    const fetchDayTimes = async () => {
+      try {
+        const response = await fetch("/api/dayTimes");
+        const data = await response.json();
+        setDayTimes(data.mostRecentDayTime);
+        console.log("dayTimes : ", data.mostRecentDayTime);
+      } catch (error) {
+        console.error("Error fetching dayTimes:", error);
+      }
+    };
+
     fetchFarms();
+    fetchDayTimes();
   }, []);
 
   const handleCardClick = (farmId: string) => {
@@ -51,7 +66,17 @@ export default function Farms() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-[url('/images/fs25-2.jpg')] bg-cover bg-center bg-no-repeat bg-opacity-0 animate-fade-in">
-        <p className="text-white text-2xl font-bold">Loading...</p>
+        <p className="text-white text-2xl font-bold mr-3">Loading...</p>
+        {loading && (
+          <div
+            className="inline-block h-9 w-9 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-white motion-reduce:animate-[spin_1.5s_linear_infinite]"
+            role="status"
+          >
+            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+              Loading...
+            </span>
+          </div>
+        )}
       </div>
     );
   }
@@ -63,10 +88,15 @@ export default function Farms() {
           <LogOut className="transition-all duration-300 ease-in-out hover:scale-110 w-12 h-12" />
         </button>
       </div>
-      <h1 className="text-5xl font-bold text-white mb-4">
+      <h1 className="text-5xl font-bold text-white mb-2">
         Farming Simulator 25 Farms (beta 1.0)
       </h1>
-      <p className="text-white mb-4">Dernière mise à jour : {lastUpdate}</p>
+      <p className="text-white mb-2">Dernière mise à jour : {lastUpdate}</p>
+      {dayTimes && (
+        <p className="text-white font-semibold text-xl mb-4">
+          Mois en cours {dayTimes?.currentDay}
+        </p>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl">
         {farms.length > 0 ? (
           farms.map((farm) => (
